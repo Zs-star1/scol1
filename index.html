@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>رحلتي في التعلم - الصف الأول</title>
+<style>
+  :root{
+    --primary:#2e7d32; --primary-2:#66bb6a; --bg:#f9fbe7; --card:#ffffff;
+    --danger:#d32f2f; --warn:#f9a825; --ok:#2e7d32; --muted:#6b7280;
+    --shadow:0 8px 18px rgba(0,0,0,.08);
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family: 'Tajawal', Arial, sans-serif;
+    background: var(--bg);
+    margin:0; color:#0f172a;
+  }
+  header{
+    background: linear-gradient(180deg,var(--primary),var(--primary-2));
+    color:#fff; padding:18px 16px; position:sticky; top:0; z-index:5;
+    box-shadow:var(--shadow);
+  }
+  header .row{display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+  .brand{display:flex; align-items:center; gap:10px}
+  .brand .logo{
+    width:44px; height:44px; background:#fff; color:var(--primary);
+    border-radius:50%; display:grid; place-items:center; font-weight:700;
+  }
+  nav a{
+    color:#fff; text-decoration:none; padding:8px 12px; border-radius:10px;
+    font-weight:600; opacity:.95; transition:.2s;
+  }
+  nav a:hover{background:rgba(255,255,255,.15)}
+  main{max-width:1100px; margin:22px auto; padding:0 14px; display:grid; gap:18px}
+  .grid{display:grid; gap:18px}
+  @media(min-width:900px){ .grid{grid-template-columns: 1.1fr 1fr} }
+
+  .card{
+    background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:16px 16px 18px;
+  }
+  .card h3{margin:0 0 12px 0; font-size:1.15rem}
+  .muted{color:var(--muted); font-size:.92rem}
+
+  /* لوحة الطالب */
+  .student{
+    display:grid; grid-template-columns: 96px 1fr; gap:14px; align-items:center;
+  }
+  .avatar{
+    width:96px; height:96px; border-radius:18px; overflow:hidden; border:3px solid #e6ffe6;
+  }
+  .avatar img{width:100%; height:100%; object-fit:cover}
+  .student .info{display:grid; gap:6px}
+  .progress{height:10px; background:#eef2ff; border-radius:999px; overflow:hidden}
+  .progress > span{display:block; height:100%; background:linear-gradient(90deg,#43a047,#a5d6a7)}
+  .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  .row.wrap{flex-wrap:wrap}
+  .pill{
+    background:#eef7ee; color:#14532d; padding:6px 10px; border-radius:999px; font-size:.85rem;
+  }
+
+  /* النِقاط والمكافآت */
+  .points{display:grid; gap:10px}
+  .points .big{
+    font-size:2rem; font-weight:800; color:var(--primary);
+  }
+  .btn{
+    border:none; padding:10px 12px; border-radius:12px; cursor:pointer; font-weight:700;
+    box-shadow:var(--shadow); background:#f1f5f9;
+  }
+  .btn.primary{background:linear-gradient(180deg,#43a047,#81c784); color:white}
+  .btn.ghost{background:#fff}
+  .btn.danger{background:linear-gradient(180deg,#d32f2f,#ef5350); color:#fff}
+  .btn.warn{background:linear-gradient(180deg,#f9a825,#ffd54f)}
+  .btn:disabled{opacity:.5; cursor:not-allowed}
+  .badge{background:#e8f5e9; color:#1b5e20; border-radius:10px; padding:4px 10px; font-size:.85rem}
+
+  /* الأنشطة */
+  .activity-form label{display:block; margin:.4rem 0 .2rem}
+  .activity-form input, .activity-form textarea, .activity-form select{
+    width:100%; padding:10px; border:1px solid #e5e7eb; border-radius:12px; background:#fff;
+    outline:none; transition:.2s;
+  }
+  .activity-form input:focus, .activity-form textarea:focus{border-color:#93c5fd; box-shadow:0 0 0 3px #e0f2fe}
+  .activities{display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:12px}
+  .tile{
+    border:1px solid #eef2ff; background:#fff; border-radius:14px; overflow:hidden; box-shadow:var(--shadow);
+    display:grid; grid-template-rows:140px 1fr; min-height:220px;
+  }
+  .tile .ph{display:grid; place-items:center; color:#94a3b8; font-size:.9rem; background:#f8fafc}
+  .tile img{width:100%; height:140px; object-fit:cover}
+  .tile .body{padding:10px; display:grid; align-content:start; gap:6px}
+  .tile .meta{font-size:.8rem; color:#64748b; display:flex; justify-content:space-between}
+
+  /* المهارات */
+  .skills{display:grid; gap:6px}
+  .skill{
+    display:grid; grid-template-columns: 1fr auto; gap:10px; align-items:center; padding:10px; border:1px dashed #e2e8f0; border-radius:12px; background:#fcfffc;
+  }
+  .skill strong{font-size:.98rem}
+  .skill input[type="checkbox"]{transform:scale(1.2)}
+
+  /* التقرير */
+  .report{display:grid; gap:10px}
+  .report pre{
+    white-space:pre-wrap; background:#0f172a; color:#e2e8f0; padding:12px; border-radius:12px; overflow:auto;
+  }
+  .footer{
+    text-align:center; padding:18px; color:#94a3b8; font-size:.9rem;
+  }
+  /* رسائل */
+  .alert{
+    border-radius:12px; padding:10px; font-size:.92rem; display:none;
+  }
+  .alert.show{display:block}
+  .alert.error{background:#fdecea; color:#b71c1c; border:1px solid #ffcdd2}
+  .alert.ok{background:#e8f5e9; color:#1b5e20; border:1px solid #c8e6c9}
+</style>
+</head>
+<body>
+<header>
+  <div class="row">
+    <div class="brand">
+      <div class="logo">أ</div>
+      <div>
+        <div style="font-size:1.15rem;font-weight:800">رحلتي في التعلم</div>
+        <div class="muted" style="font-size:.85rem">منصة متابعة تقدم الصف الأول</div>
+      </div>
+    </div>
+    <nav class="row">
+      <a href="#student">الطالب</a>
+      <a href="#points">النقاط</a>
+      <a href="#activities">الأنشطة</a>
+      <a href="#skills">المهارات</a>
+      <a href="#report">التقرير</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="student" class="card">
+    <h3>لوحة الطالب</h3>
+    <div class="alert error" id="errBox"></div>
+    <div class="student">
+      <div class="avatar"><img id="avatar" alt="صورة الطالب" src="https://i.imgur.com/2yaf2wb.png"></div>
+      <div class="info">
+        <div class="row wrap">
+          <input id="studentName" placeholder="اسم الطالب" aria-label="اسم الطالب" style="padding:10px;border:1px solid #e5e7eb;border-radius:12px;min-width:200px"/>
+          <input id="studentImg" placeholder="رابط صورة الطالب (اختياري)" aria-label="رابط صورة" style="padding:10px;border:1px solid #e5e7eb;border-radius:12px;min-width:260px"/>
+          <button class="btn primary" id="saveStudent">حفظ البيانات</button>
+          <span class="pill" id="saveOk" style="display:none;">✅ تم الحفظ</span>
+        </div>
+        <div class="row" style="justify-content:space-between">
+          <div class="muted">نسبة إتقان المهارات</div>
+          <div class="badge"><span id="skillPct">0</span>%</div>
+        </div>
+        <div class="progress" aria-label="شريط التقدم">
+          <span id="progressBar" style="width:0%"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="points" class="card">
+    <h3>النقاط والمكافآت</h3>
+    <div class="points">
+      <div class="row" style="justify-content:space-between; align-items:end">
+        <div>
+          <div class="muted">رصيد النقاط الحالي</div>
+          <div class="big" id="pointsTotal">0</div>
+        </div>
+        <div class="row">
+          <button class="btn primary" id="add5">+5 نقاط</button>
+          <button class="btn warn" id="add1">+1</button>
+          <button class="btn ghost" id="minus1">-1</button>
+          <button class="btn danger" id="resetPoints">تصفير</button>
+        </div>
+      </div>
+      <div class="row wrap">
+        <select id="rewardSelect" aria-label="اختيار مكافأة">
+          <option value="">اختر مكافأة للاستبدال</option>
+          <option value="ملصق ذهبي - 5">ملصق ذهبي (5 نقاط)</option>
+          <option value="وسام المثابرة - 10">وسام المثابرة (10 نقاط)</option>
+          <option value="شهادة تقدير - 15">شهادة تقدير (15 نقطة)</option>
+        </select>
+        <button class="btn primary" id="redeemBtn">استبدال</button>
+        <span class="muted">السجل:</span>
+        <div class="pill" id="lastRedeem">لا يوجد</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="activities" class="card">
+    <h3>الأنشطة اليومية</h3>
+    <form class="activity-form" id="activityForm" novalidate>
+      <div class="row wrap">
+        <div style="flex:1; min-width:200px">
+          <label>عنوان النشاط</label>
+          <input id="actTitle" required maxlength="60" placeholder="مثال: قراءة قصة قصيرة"/>
+        </div>
+        <div style="flex:2; min-width:260px">
+          <label>وصف مختصر</label>
+          <input id="actDesc" required maxlength="120" placeholder="ماذا فعل الطالب؟"/>
+        </div>
+        <div style="flex:1; min-width:220px">
+          <label>رابط صورة (اختياري)</label>
+          <input id="actImg" placeholder="https://example.com/photo.jpg" inputmode="url"/>
+        </div>
+        <div style="flex:1; min-width:160px">
+          <label>التصنيف</label>
+          <select id="actCat">
+            <option>قراءة</option>
+            <option>كتابة</option>
+            <option>حساب</option>
+            <option>سلوك</option>
+            <option>نشاط جماعي</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn primary" type="submit">إضافة النشاط</button>
+        <button class="btn ghost" id="clearActivities" type="button">حذف جميع الأنشطة</button>
+      </div>
+      <div class="alert error" id="actErr"></div>
+    </form>
+
+    <div class="activities" id="activitiesList" aria-live="polite"></div>
+  </section>
+
+  <section id="skills" class="card">
+    <h3>جدول متابعة المهارات</h3>
+    <div class="skills" id="skillsList"></div>
+  </section>
+
+  <section id="report" class="card">
+    <h3>التقرير الشهري</h3>
+    <div class="report">
+      <div class="row wrap">
+        <input id="reportMonth" placeholder="الشهر (مثال: أغسطس 2025)" style="padding:10px;border:1px solid #e5e7eb;border-radius:12px;min-width:220px"/>
+        <button class="btn primary" id="genReport">توليد التقرير</button>
+        <button class="btn ghost" id="printReport">طباعة</button>
+        <button class="btn" id="exportBtn" title="نسخ احتياطي">تصدير JSON</button>
+        <label class="btn" for="importFile" style="cursor:pointer">استيراد JSON</label>
+        <input id="importFile" type="file" accept="application/json" style="display:none"/>
+      </div>
+      <pre id="reportOut" aria-label="نص التقرير"></pre>
+      <div class="alert ok" id="importOk">👍 تم الاستيراد بنجاح</div>
+      <div class="alert error" id="importErr">حدث خطأ أثناء الاستيراد</div>
+    </div>
+  </section>
+
+  <div class="footer">© منصة رحلتي في التعلم – الصف الأول</div>
+</main>
+
+<script>
+/* ===================== بيانات افتراضية + ثوابت ===================== */
+const DEFAULT_SKILLS = [
+  { id:'read-letters',   title:'تعرف على الحروف', area:'القراءة' },
+  { id:'read-words',     title:'قراءة كلمات ثلاثية', area:'القراءة' },
+  { id:'write-letters',  title:'كتابة الحروف بشكل صحيح', area:'الكتابة' },
+  { id:'write-name',     title:'كتابة الاسم كاملًا', area:'الكتابة' },
+  { id:'count-20',       title:'عدّ الأرقام حتى 20', area:'الحساب' },
+  { id:'add-basic',      title:'جمع بسيط حتى 10', area:'الحساب' },
+  { id:'behavior',       title:'سلوك إيجابي داخل الصف', area:'السلوك' },
+  { id:'teamwork',       title:'مشاركة في نشاط جماعي', area:'المهارات الاجتماعية' },
+];
+
+const LS_KEYS = {
+  student:'rt_student',
+  points:'rt_points',
+  activities:'rt_activities',
+  skills:'rt_skills'
+};
+
+/* ===================== أدوات مساعدة آمنة ===================== */
+const safeURL = (u)=>{
+  try{
+    if(!u) return '';
+    const url = new URL(u);
+    // قبول http/https فقط
+    if(['http:','https:'].includes(url.protocol)){
+      return url.href;
+    }
+  }catch(_){}
+  return '';
+};
+const el = (q)=>document.querySelector(q);
+const fmtDate = (d)=> new Intl.DateTimeFormat('ar-SA', {
+  dateStyle:'medium', timeStyle:'short'
+}).format(d);
+
+/* ===================== حالة التطبيق (State) ===================== */
+let state = {
+  student:{ name:'', img:'' },
+  points:0,
+  activities:[], // {id,title,desc,img,cat,at}
+  skills:{}      // {skillId: boolean}
+};
+
+/* ===================== تحميل/حفظ ===================== */
+function loadAll(){
+  try{
+    const s = JSON.parse(localStorage.getItem(LS_KEYS.student)||'{}');
+    const p = JSON.parse(localStorage.getItem(LS_KEYS.points)||'0');
+    const a = JSON.parse(localStorage.getItem(LS_KEYS.activities)||'[]');
+    const k = JSON.parse(localStorage.getItem(LS_KEYS.skills)||'{}');
+    state.student = {name:s.name||'', img:s.img||''};
+    state.points = Number.isFinite(p)? p : 0;
+    state.activities = Array.isArray(a)? a : [];
+    state.skills = typeof k==='object' && k? k : {};
+  }catch(e){
+    console.error('load err', e);
+  }
+}
+function persist(){
+  localStorage.setItem(LS_KEYS.student, JSON.stringify(state.student));
+  localStorage.setItem(LS_KEYS.points, JSON.stringify(state.points));
+  localStorage.setItem(LS_KEYS.activities, JSON.stringify(state.activities));
+  localStorage.setItem(LS_KEYS.skills, JSON.stringify(state.skills));
+}
+
+/* ===================== واجهة: لوحة الطالب ===================== */
+function renderStudent(){
+  el('#studentName').value = state.student.name || '';
+  el('#studentImg').value = state.student.img || '';
+  const img = state.student.img ? safeURL(state.student.img) : '';
+  el('#avatar').src = img || 'https://i.imgur.com/2yaf2wb.png';
+  updateSkillProgress();
+}
+el('#saveStudent').addEventListener('click', ()=>{
+  const name = el('#studentName').value.trim();
+  const img = el('#studentImg').value.trim();
+  const err = el('#errBox');
+  err.classList.remove('show'); err.textContent='';
+  if(name.length < 2){
+    err.textContent = '⚠️ الرجاء إدخال اسم صحيح (حرفان على الأقل).';
+    err.classList.add('show'); err.classList.add('error');
+    return;
+  }
+  if(img && !safeURL(img)){
+    err.textContent = '⚠️ رابط الصورة غير صالح. استخدم http أو https.';
+    err.classList.add('show'); err.classList.add('error');
+    return;
+  }
+  state.student = {name, img:safeURL(img)};
+  persist();
+  const ok = el('#saveOk'); ok.style.display='inline-block';
+  setTimeout(()=> ok.style.display='none', 1400);
+});
+
+/* ===================== واجهة: النقاط والمكافآت ===================== */
+function renderPoints(){
+  el('#pointsTotal').textContent = state.points;
+}
+function addPoints(n){
+  state.points = Math.max(0, state.points + n);
+  persist(); renderPoints();
+}
+el('#add5').addEventListener('click', ()=> addPoints(5));
+el('#add1').addEventListener('click', ()=> addPoints(1));
+el('#minus1').addEventListener('click', ()=> addPoints(-1));
+el('#resetPoints').addEventListener('click', ()=>{
+  if(confirm('هل أنت متأكد من تصفير النقاط؟')){ state.points=0; persist(); renderPoints(); }
+});
+el('#redeemBtn').addEventListener('click', ()=>{
+  const sel = el('#rewardSelect').value;
+  if(!sel) return;
+  // استخراج التكلفة الرقمية من النص
+  const cost = Number((sel.match(/(\d+)/)||[])[1]||0);
+  if(state.points < cost){
+    alert('النقاط غير كافية لهذه المكافأة.');
+    return;
+  }
+  state.points -= cost; persist(); renderPoints();
+  el('#lastRedeem').textContent = `${sel} – ${fmtDate(new Date())}`;
+});
+
+/* ===================== واجهة: الأنشطة ===================== */
+function renderActivities(){
+  const box = el('#activitiesList');
+  box.innerHTML = '';
+  if(!state.activities.length){
+    const div = document.createElement('div');
+    div.className='tile';
+    div.innerHTML = `<div class="ph">لا توجد أنشطة بعد</div><div class="body muted">أضف نشاطًا من النموذج أعلاه.</div>`;
+    box.appendChild(div);
+    return;
+  }
+  state.activities
+    .slice()
+    .sort((a,b)=> b.at - a.at)
+    .forEach(a=>{
+      const d = document.createElement('div');
+      d.className='tile';
+      const top = a.img? `<img src="${safeURL(a.img)}" alt="صورة نشاط">` : `<div class="ph">بدون صورة</div>`;
+      d.innerHTML = `
+        ${top}
+        <div class="body">
+          <strong>${escapeHTML(a.title)}</strong>
+          <div class="muted">${escapeHTML(a.desc)}</div>
+          <div class="meta">
+            <span>📂 ${escapeHTML(a.cat)}</span>
+            <span>${fmtDate(new Date(a.at))}</span>
+          </div>
+          <div class="row" style="justify-content:space-between;margin-top:6px">
+            <button class="btn ghost" data-id="${a.id}" data-action="del">حذف</button>
+            <button class="btn" data-id="${a.id}" data-action="give">+1 نقطة</button>
+          </div>
+        </div>`;
+      box.appendChild(d);
+    });
+}
+function escapeHTML(s=''){
+  return s.replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+el('#activityForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const err = el('#actErr'); err.classList.remove('show'); err.textContent='';
+  const title = el('#actTitle').value.trim();
+  const desc  = el('#actDesc').value.trim();
+  const img   = el('#actImg').value.trim();
+  const cat   = el('#actCat').value;
+  // تحقق بسيط
+  if(title.length<2 || desc.length<4){
+    err.textContent = '⚠️ الرجاء كتابة عنوان ووصف مناسبين.';
+    err.classList.add('show'); err.classList.add('error'); return;
+  }
+  if(img && !safeURL(img)){
+    err.textContent = '⚠️ رابط الصورة غير صالح.';
+    err.classList.add('show'); err.classList.add('error'); return;
+  }
+  const item = { id: crypto.randomUUID(), title, desc, img:safeURL(img), cat, at: Date.now() };
+  state.activities.push(item); persist();
+  (['#actTitle','#actDesc','#actImg']).forEach(q=> el(q).value='');
+  renderActivities();
+});
+el('#activitiesList').addEventListener('click', (e)=>{
+  const btn = e.target.closest('button[data-action]');
+  if(!btn) return;
+  const id = btn.getAttribute('data-id');
+  const action = btn.getAttribute('data-action');
+  if(action==='del'){
+    state.activities = state.activities.filter(x=> x.id!==id);
+    persist(); renderActivities();
+  }else if(action==='give'){
+    addPoints(1);
+  }
+});
+el('#clearActivities').addEventListener('click', ()=>{
+  if(confirm('حذف جميع الأنشطة نهائيًا؟')){
+    state.activities = []; persist(); renderActivities();
+  }
+});
+
+/* ===================== واجهة: المهارات ===================== */
+function renderSkills(){
+  const box = el('#skillsList'); box.innerHTML='';
+  DEFAULT_SKILLS.forEach(s=>{
+    const checked = !!state.skills[s.id];
+    const row = document.createElement('div');
+    row.className='skill';
+    row.innerHTML = `
+      <div>
+        <strong>${escapeHTML(s.title)}</strong>
+        <div class="muted">${escapeHTML(s.area)}</div>
+      </div>
+      <label class="row" style="gap:8px">
+        <span class="muted">تم الإتقان</span>
+        <input type="checkbox" ${checked?'checked':''} data-skill="${s.id}"/>
+      </label>`;
+    box.appendChild(row);
+  });
+  updateSkillProgress();
+}
+function updateSkillProgress(){
+  const total = DEFAULT_SKILLS.length;
+  const done = DEFAULT_SKILLS.filter(s=> state.skills[s.id]).length;
+  const pct = total? Math.round((done/total)*100) : 0;
+  el('#skillPct').textContent = pct;
+  el('#progressBar').style.width = pct + '%';
+}
+el('#skillsList').addEventListener('change', (e)=>{
+  const c = e.target.closest('input[type="checkbox"][data-skill]');
+  if(!c) return;
+  state.skills[c.dataset.skill] = c.checked;
+  persist(); updateSkillProgress();
+});
+
+/* ===================== التقرير والطباعة والنسخ الاحتياطي ===================== */
+el('#genReport').addEventListener('click', ()=>{
+  const month = el('#reportMonth').value.trim() || 'هذا الشهر';
+  const skillsDone = DEFAULT_SKILLS.filter(s=> state.skills[s.id]).map(s=> '• ' + s.title).join('\n');
+  const latestActs = state.activities
+                      .slice().sort((a,b)=> b.at-a.at).slice(0,5)
+                      .map(a=> `• [${a.cat}] ${a.title} – ${new Date(a.at).toLocaleDateString('ar-SA')}`)
+                      .join('\n');
+  const txt =
+`تقرير الطالب: ${state.student.name || 'بدون اسم'}
+الشهر: ${month}
+
+النقاط الحالية: ${state.points}
+
+المهارات المتقنة (${DEFAULT_SKILLS.filter(s=> state.skills[s.id]).length}/${DEFAULT_SKILLS.length}):
+${skillsDone || 'لا توجد مهارات مكتملة بعد'}
+
+أبرز الأنشطة الأخيرة:
+${latestActs || 'لا توجد أنشطة مسجلة'}
+
+ملاحظات المعلّم:
+- الاستمرار في تعزيز مهارات القراءة اليومية.
+- تشجيع المشاركة في الأنشطة الجماعية.
+- مكافأة السلوك الإيجابي بنقاط إضافية.`;
+  el('#reportOut').textContent = txt;
+});
+el('#printReport').addEventListener('click', ()=> window.print());
+
+el('#exportBtn').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'backup-rahleti.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+el('#importFile').addEventListener('change', async (e)=>{
+  const ok = el('#importOk'), err = el('#importErr');
+  ok.classList.remove('show'); err.classList.remove('show');
+  try{
+    const file = e.target.files?.[0];
+    if(!file) return;
+    const text = await file.text();
+    const data = JSON.parse(text);
+    // تحقق سريع لشكل البيانات
+    if(!('student' in data) || !('points' in data)){ throw new Error('ملف غير متوافق'); }
+    state = data;
+    persist();
+    renderStudent(); renderPoints(); renderActivities(); renderSkills();
+    ok.classList.add('show');
+  }catch(e){
+    console.error(e);
+    err.textContent = 'تعذر استيراد الملف. تأكد من صحة JSON.';
+    err.classList.add('show');
+  }finally{
+    e.target.value = '';
+  }
+});
+
+/* ===================== بدء التشغيل ===================== */
+loadAll();
+renderStudent();
+renderPoints();
+renderActivities();
+renderSkills();
+</script>
+</body>
+</html>
